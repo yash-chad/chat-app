@@ -44,6 +44,7 @@ const getUser = (id)=>{
     const user= users.find((user)=>{
         return user.id === id
     })
+    
     return user
 }
 
