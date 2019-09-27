@@ -88,8 +88,6 @@ app.get("/translated",(req,res)=>{
         const source_lan = req.query.source_lan
         const res_lan = req.query.res_lan
 
-        console.log(inputstring)
-        console.log(res_lan)
         googleTranslate.translate(inputstring ,source_lan ,res_lan ,(err,translation)=>{
             
             if(err){

@@ -1,11 +1,12 @@
 const submit = document.querySelector("#btn")
 const inputdata = document.querySelector("#inputdata")
 const result = document.querySelector("#result")
+const btn =document.querySelector(".talk")
+const speakme = document.querySelector("#speakme")
 
 
-
-submit.addEventListener("submit",(e)=>{
-    e.preventDefault()
+//Translate the data
+const translateme = ()=>{
     const datainp = inputdata.value
 
     const source_lan = document.querySelector("#source_lan").value
@@ -31,25 +32,51 @@ submit.addEventListener("submit",(e)=>{
            
         })
 
+}
+//Submit form event
+submit.addEventListener("submit",(e)=>{
+    e.preventDefault()
+    translateme()
 })
     
-// weatherForm.addEventListener("submit",(e)=>{
-//     e.preventDefault();  //Restricts the refreshing of the page on input
-//     const location=search.value;
-//     const loc_url="/weather?address="+location;  
-//     message_1.textContent="LOADING....";
-//     message_2.textContent='';
-//     fetch(loc_url).then((response)=>{
-//         response.json().then((data)=>{
 
-//             if(data.error){
-//                message_1.textContent=data.error;
-//             }
-//             else{
-//                 message_1.textContent=data.location;
-//                 message_2.textContent=data.forecast;
-//             }
-//         })
-//     })
+//Speech Recognition
+const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition
+const recognition = new SpeechRecognition()
 
-// })
+
+recognition.onstart = ()=>{
+    console.log("Voices activated!!")
+}
+
+recognition.onresult = (event)=>{
+    console.log(event)
+    const current = event.resultIndex
+
+    const transcript = event.results[current][0].transcript
+    inputdata.value = transcript
+    translateme()
+   
+}
+//Voice Recognition event
+btn.addEventListener("click",()=>{
+    recognition.start()
+})
+//Speak out event
+speakme.addEventListener("click",()=>{
+    const totranslate = document.querySelector("#result").value
+    const lan = document.querySelector("#res_lan").value
+    readOutLoud(totranslate , lan)
+})
+
+const readOutLoud = (message , lang)=>{
+    const speech = new SpeechSynthesisUtterance()
+    console.log(speech)
+
+    speech.text = message
+    speech.voulme = 1;
+    speech.rate = 1;
+    speech.lang = lang
+
+    window.speechSynthesis.speak(speech)
+}
