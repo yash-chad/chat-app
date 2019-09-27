@@ -25,13 +25,15 @@ const autoscroll =()=>{
 
 socket.on("message",(message)=>{
     console.log(message)
-    const html = Mustache.render(messageTemplate,{
-        username : message.username,
-        message : message.text,
-        createdAt : moment(message.createdAt).format('h:mm a')
-    })
-    messages.insertAdjacentHTML('beforeend',html)
-    autoscroll()
+
+        const html = Mustache.render(messageTemplate,{
+            username : message.username,
+            message : message.text,
+            createdAt : moment(message.createdAt).format('h:mm a')
+        })
+        messages.insertAdjacentHTML('beforeend',html)
+        autoscroll()
+    
 })
 
 
@@ -60,8 +62,10 @@ messageForm.addEventListener("submit",(e)=>{
 
     messageFormButton.setAttribute("disabled","disabled")  //Disable send button on clicking
 
-    const message=e.target.elements.message.value
-    //OR const message =document.querySelector("input").value 
+    
+    //const message=e.target.elements.message.value
+    const message =document.querySelector("input").value 
+    messageForm.value = translateme(message)
 
     socket.emit("message",message,(error)=>{
 
@@ -78,6 +82,19 @@ messageForm.addEventListener("submit",(e)=>{
      
     })
 })
+
+
+const translatebtn = document.querySelector("#button_trans")
+translatebtn.addEventListener("click",(e)=>{
+
+    e.preventDefault()
+
+     //const message=e.target.elements.message.value
+     const message =document.querySelector("input").value 
+     const input = document.getElementById("input")
+     input.value = translateme(message)
+})
+
 
 locationbutton.addEventListener("click",()=>{
 

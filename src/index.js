@@ -42,20 +42,22 @@ io.on("connection",(socket)=>{
     })
 
     socket.on("message",(message,callback)=>{
-        const user =getUser(socket.id)
+        const user = getUser(socket.id)
 
-        const filter =new Filter()
+        // const filter =new Filter()
 
-        if(filter.isProfane(message)){
-            return callback("PLease maintain your language.Profanity is prohibited!")
-        }
+        // if(filter.isProfane(message)){
+        //     return callback("PLease maintain your language.Profanity is prohibited!")
+        // }
+
+        
 
         io.to(user.room).emit("message",generateMessage(user.username,message))
         callback()
     })
 
     socket.on("sendLocation",(position,callback)=>{   
-        const user =getUser(socket.id)
+        const user = getUser(socket.id)
 
         io.to(user.room).emit("locationMessage",generateLocation(user.username,`https://google.com/maps?q=${position.latitude},${position.longitude})`))
         callback()

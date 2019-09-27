@@ -4,16 +4,41 @@ const result = document.querySelector("#result");
 const btn11 = document.querySelector(".talk");
 const speakme = document.querySelector("#speakme");
 
+
+var someFunction = function(mymessage) {
+    return new Promise(function(resolve, reject) {
+       
+        try{
+            const tvalue = translateme(mymessage)
+            resolve(tvalue)
+        }catch(e){
+            reject("Error")
+        }
+  
+    });
+}
+
+
 //Translate the data
-const translateme = () => {
-  console.log("Here");
-  const datainp = inputdata.value;
+const translateme =(mymessage) => {
 
-  const source_lan = document.querySelector("#source_lan").value;
-  const res_lan = document.querySelector("#res_lan").value;
+ 
+    if ($("body").data("title") === "my_translate_page") {
+        var datainp = inputdata.value;
+        
+        var source_lan = document.querySelector("#source_lan").value;
+        var res_lan = document.querySelector("#res_lan").value;
+    }
+    if($("body").data("title") === "my_chat_page"){
+        var datainp = mymessage
 
-  console.log(source_lan);
-  console.log(res_lan);
+        var source_lan = "en"
+        var res_lan = "hi"
+
+    }
+  
+//   console.log(source_lan);
+//   console.log(res_lan);
 
   const inputlink =
     "http://localhost:3000/translated?source_lan=" +
@@ -23,24 +48,40 @@ const translateme = () => {
     "&inputstring=" +
     datainp;
   console.log(inputlink);
-  result.textContent = "Loading....";
-
+ 
   fetch(inputlink).then(res => {
     res.json().then(data => {
       console.log(data);
-      if (data.error) {
-        result.value = data.error;
-      } else {
-        result.value = data.translatedText;
-      }
+
+    if ($("body").data("title") === "my_translate_page") {
+         
+        result.textContent = "Loading....";
+
+        if (data.error) {
+            result.value = data.error;
+        } else {
+            result.value = data.translatedText;
+        }
+
+    }else{
+        console.log(data.translatedText)
+        const input = document.getElementById("input")
+        input.value = data.translatedText
+    }
+
     });
   });
 };
+
+
 //Submit form event
-submit.addEventListener("click", e => {
-  e.preventDefault();
-  translateme();
-});
+if ($("body").data("title") === "my_translate_page") {
+    submit.addEventListener("click", e => {
+        e.preventDefault();
+        translateme();
+      });
+}
+
 
 //Speech Recognition
 const SpeechRecognition =
@@ -59,29 +100,33 @@ recognition.onresult = event => {
   inputdata.value = transcript;
   translateme();
 };
-//Voice Recognition event
-btn11.addEventListener("click", () => {
-  recognition.start();
-});
-//Speak out event
-speakme.addEventListener("click", () => {
-  const totranslate = document.querySelector("#result").value;
-  var lang = document.querySelector("#res_lan").value;
-  if (
-    lang == "mr" ||
-    lang == "kn" ||
-    lang == "gu" ||
-    lang == "ml" ||
-    lang == "ta" ||
-    lang == "ur" ||
-    lang == "ta" ||
-    lang == "te" ||
-    lang == "sd"
-  ) {
-    lang = "hi";
-  }
-  readOutLoud(totranslate, lang);
-});
+
+if ($("body").data("title") === "my_translate_page") {
+
+    //Voice Recognition event
+    btn11.addEventListener("click", () => {
+    recognition.start();
+    });
+    //Speak out event
+    speakme.addEventListener("click", () => {
+    const totranslate = document.querySelector("#result").value;
+    var lang = document.querySelector("#res_lan").value;
+    if (
+        lang == "mr" ||
+        lang == "kn" ||
+        lang == "gu" ||
+        lang == "ml" ||
+        lang == "ta" ||
+        lang == "ur" ||
+        lang == "ta" ||
+        lang == "te" ||
+        lang == "sd"
+    ) {
+        lang = "hi";
+    }
+    readOutLoud(totranslate, lang);
+    });
+}
 
 const readOutLoud = (message, lang) => {
   const speech = new SpeechSynthesisUtterance();
