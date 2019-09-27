@@ -79,11 +79,6 @@ io.on("connection",(socket)=>{
 
 app.get("/translated",(req,res)=>{
  
-    // var responses =[]
-    // const obj = {"hello": "Hey" };
-    // responses.push(obj)
-    // res.json(responses)
-
     if(!req.query.inputstring){
         res.send({
             error:"Please provide some input text"
@@ -92,7 +87,11 @@ app.get("/translated",(req,res)=>{
         const inputstring = req.query.inputstring
         const source_lan = req.query.source_lan
         const res_lan = req.query.res_lan
+
+        console.log(inputstring)
+        console.log(res_lan)
         googleTranslate.translate(inputstring ,source_lan ,res_lan ,(err,translation)=>{
+            
             if(err){
                 return err
             }else{

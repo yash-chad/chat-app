@@ -14,12 +14,12 @@ submit.addEventListener("submit",(e)=>{
     console.log(source_lan)
     console.log(res_lan)
     
-    const inputlink = "http://localhost:3000/translated?source_lan"+source_lan+"&res_lan="+res_lan+"&inputstring=" + datainp;
+    const inputlink = "http://localhost:3000/translated?source_lan="+source_lan+"&res_lan="+res_lan+"&inputstring=" + datainp;
     console.log(inputlink)
     result.textContent ="Loading...."    
 
         fetch(inputlink).then((res)=>{
-
+        
             res.json().then((data)=>{
                 console.log(data)
                 if(data.error){
