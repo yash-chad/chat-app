@@ -5,6 +5,7 @@ const socketio=require("socket.io")
 const Filter=require("bad-words")
 const {generateMessage , generateLocation}=require("./utils/messages")
 const {addUser ,removeUser , getUser, getUsersInRoom}= require("./utils/users")
+const translateRoutes = require("./routes/translate")
 
 const app=express();
 const server = http.createServer(app) 
@@ -14,7 +15,7 @@ const io=socketio(server)
 //The only reason we did this was to pass server to the socketio(server) function
 
 app.use(express.static(path.join(__dirname,"../public")))
-
+app.use("/",translateRoutes)
 
 //NOTE:The emit functions for connection and disconnect are inbiult by the socket.io ,we dont need to call them
 io.on("connection",(socket)=>{
@@ -75,9 +76,7 @@ io.on("connection",(socket)=>{
 
 })
 
-
-
-const PORT =process.env.PORT || 3000;
+const PORT =process.env.PORT || 5000;
 server.listen(PORT,()=>{
     console.log("server is up on port " + PORT);
 })

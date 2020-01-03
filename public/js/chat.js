@@ -1,9 +1,10 @@
-const socket =io()
+const socket = io()
 
 //Elements
 const messageForm = document.querySelector("#message_form")
 const messageFormInput=messageForm.querySelector("#input")
-const messageFormButton=messageForm.querySelector("#button")
+const messageFormButton=document.querySelector("#send_button")
+const translateBtn = document.querySelector("#translate_btn")
 const locationbutton =document.querySelector("#locationbutton")
 const messages= document.querySelector("#messages")
 
@@ -12,12 +13,15 @@ const messageTemplate = document.querySelector("#message-template").innerHTML
 const locationTemplate =document.querySelector("#location-template").innerHTML
 const sidebarTemplate =document.querySelector("#sidebar-template").innerHTML
 
-
+translateBtn.addEventListener("click",()=>{ translateme()})
+//messageFormButton.addEventListener("click",()=>{console.log("efjh")})
 //Options --This is the qs library whose link we've included in the html file
 //location.search is a browser side tool which gives us the querystring
 //eg : ?username=yashchachad1&room=myroom
 //Qs.parse returns all the query parameters as object
-const {username , room } = Qs.parse(location.search, {ignoreQueryPrefix : true })
+var {username , room , source_lan , res_lan } = Qs.parse(location.search, {ignoreQueryPrefix : true })
+console.log(source_lan)
+console.log(res_lan)
 
 const autoscroll =()=>{
     messages.scrollTop = messages.scrollHeight
@@ -55,13 +59,11 @@ socket.on("roomData",({ room , users })=>{
 
 })
 
-messageForm.addEventListener("submit",(e)=>{
+messageFormButton.addEventListener("click",(e)=>{
     e.preventDefault()
 
     messageFormButton.setAttribute("disabled","disabled")  //Disable send button on clicking
-
-    const message=e.target.elements.message.value
-    //OR const message =document.querySelector("input").value 
+    const message =document.querySelector("input").value 
 
     socket.emit("message",message,(error)=>{
 

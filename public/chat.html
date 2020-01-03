@@ -16,8 +16,10 @@
                 <div class="compose">
                     <form id="message_form">
                         <input placeholder="Enter your message here" id="input" name="message" required autocomplete="off">
-                        <button id="button">Send</button>
                     </form>
+                    <button id="speak">Speak!</button>
+                    <button id="translate_btn">Translate</button>
+                    <button id="send_button">Send</button>
                     <button id="locationbutton">Send Location</button>
                 </div>
 
@@ -61,5 +63,7 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/qs/6.6.0/qs.min.js"></script>
         <script src="/socket.io/socket.io.js"></script>
         <script src="./js/chat.js"></script>
+        <script src="js/translate.js"></script>
+        <script src="js/speech-text.js"></script>
     </body>
 </html>

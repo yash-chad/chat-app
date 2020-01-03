@@ -12,10 +12,9 @@ const generateLocation= (username ,locationlink)=>{
         locationlink ,
         createdAt :new Date().getTime()
     }
-
 }
 
-module.exports ={
+module.exports = {
     generateMessage,
     generateLocation
 }
